@@ -1,0 +1,236 @@
+
+import java.awt.Toolkit;
+import java.awt.print.PrinterException;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import javax.swing.JOptionPane;
+import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+
+/**
+ *
+ * @author rudr'a
+ */
+public class Printing extends javax.swing.JFrame {
+
+    /**
+     * Creates new form Printing
+     */
+    public Printing() {
+        initComponents();
+        setIcon();
+        this.setResizable(false);
+    }
+    public Printing(String a)
+    {
+         initComponents();
+         setIcon();
+        this.setResizable(false);
+        Update_Print(a);
+        
+    }
+    public void Update_Print(String a)
+    {
+         Connection conn=null;
+        ResultSet rs=null;
+        PreparedStatement pst=null;
+        conn=JavaConnect.ConnectDB();
+        try
+        {
+             String sql="select * from Customer_Bill where ID=?";
+                          pst=conn.prepareStatement(sql);
+                          pst.setString(1,a);
+                          rs=pst.executeQuery();
+                          if(rs.next())
+                          {
+                              String aa=rs.getString("Name");
+                              
+                              String b=rs.getString("ID");
+                        
+                              String c=rs.getString("Mobile");
+                            
+                              String d=rs.getString("Profession");
+                         
+                              String e=rs.getString("Room");
+                            
+                              String f=rs.getString("RoomType");
+                        
+                              String g=rs.getString("CheckIn");
+                            
+                              String h=rs.getString("CheckOut");
+                              
+                              String i=rs.getString("Price");
+                              	DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+	Date date = new Date();
+	//System.out.println(dateFormat.format(date));
+                              jTextArea1.append("\t     Priyanka Palace\n\t   Jamner,Dist- Jalgaon\n\t Date :"+date+"\n"
+                                      + "----------------------------------------------------------------------------------------------\n"
+                                      + "\n"
+                                      + "Customer Name\t"+aa+""
+                                              + "\nCusotmer ID          \t"+b+""
+                                                      + "\nMobile No.         \t"+c+""
+                                                              + "\nProfession          \t"+d+""
+                                                                      + "\nRoom          \t"+e+""
+                                                                              + "\nRoom Type        \t"+f+""
+                                                                                      + "\nCheck In        \t"+g+""
+                                                                                              + "\nCheck Out         \t"+h+""
+                                                                                                      + "\nTotal Bill        \t"+i+"\n----------------------------------------------------------------------------------------------");
+                              
+                          
+                          }
+        }
+        catch(SQLException ex)
+        {
+            JOptionPane.showMessageDialog(null, "Sorry Error Occured\n"+ex);
+        }
+         finally
+            {
+                try
+                {
+                    if(rs!=null)
+                    {
+                        rs.close();
+
+                    }
+                    if(conn!=null)
+                    {
+                        conn.close();
+                    }
+                    if(pst!=null)
+                    {
+                        pst.close();
+                    }
+                }
+                catch(SQLException e)
+                {
+                    JOptionPane.showMessageDialog(null, "Connection not has been closed yet");
+                }
+            }
+    }
+    public void setIcon()
+    {
+        setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("HotelIcon.png")));
+    }
+    /**
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
+     */
+    @SuppressWarnings("unchecked")
+    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
+    private void initComponents() {
+
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jTextArea1 = new javax.swing.JTextArea();
+        Print_btn = new javax.swing.JButton();
+        Back_btn = new javax.swing.JButton();
+        image = new javax.swing.JLabel();
+
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Print Bill");
+        getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jTextArea1.setColumns(20);
+        jTextArea1.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
+        jTextArea1.setRows(5);
+        jScrollPane1.setViewportView(jTextArea1);
+
+        getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 50, 580, 530));
+
+        Print_btn.setBackground(new java.awt.Color(255, 255, 0));
+        Print_btn.setFont(new java.awt.Font("Tempus Sans ITC", 1, 18)); // NOI18N
+        Print_btn.setText("Print");
+        Print_btn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                Print_btnActionPerformed(evt);
+            }
+        });
+        getContentPane().add(Print_btn, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 10, 80, 30));
+
+        Back_btn.setBackground(new java.awt.Color(51, 102, 255));
+        Back_btn.setFont(new java.awt.Font("Tempus Sans ITC", 1, 18)); // NOI18N
+        Back_btn.setText("Back");
+        Back_btn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                Back_btnActionPerformed(evt);
+            }
+        });
+        getContentPane().add(Back_btn, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 10, 80, 30));
+
+        image.setIcon(new javax.swing.ImageIcon(getClass().getResource("/497320.jpg"))); // NOI18N
+        image.setText("jLabel1");
+        getContentPane().add(image, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 620, 590));
+
+        pack();
+        setLocationRelativeTo(null);
+    }// </editor-fold>//GEN-END:initComponents
+
+    private void Print_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Print_btnActionPerformed
+        try {
+            // TODO add your handling code here:
+            jTextArea1.print();
+        } catch (PrinterException ex) {
+            Logger.getLogger(Printing.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_Print_btnActionPerformed
+
+    private void Back_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Back_btnActionPerformed
+        // TODO add your handling code here:
+        new Registration().setVisible(true);
+        dispose();
+    }//GEN-LAST:event_Back_btnActionPerformed
+
+    /**
+     * @param args the command line arguments
+     */
+    public static void main(String args[]) {
+        /* Set the Nimbus look and feel */
+        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
+        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
+         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+         */
+        try {
+            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+                if ("Nimbus".equals(info.getName())) {
+                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                    break;
+                }
+            }
+        } catch (ClassNotFoundException ex) {
+            java.util.logging.Logger.getLogger(Printing.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (InstantiationException ex) {
+            java.util.logging.Logger.getLogger(Printing.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (IllegalAccessException ex) {
+            java.util.logging.Logger.getLogger(Printing.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+            java.util.logging.Logger.getLogger(Printing.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        }
+        //</editor-fold>
+
+        /* Create and display the form */
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                new Printing().setVisible(true);
+            }
+        });
+    }
+
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton Back_btn;
+    private javax.swing.JButton Print_btn;
+    private javax.swing.JLabel image;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTextArea jTextArea1;
+    // End of variables declaration//GEN-END:variables
+}
